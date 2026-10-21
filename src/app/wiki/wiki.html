@@ -250,6 +250,510 @@
                       </div>
                     </div>
                   }
+                  @case ('dynamic-island') {
+                    <div class="demo-box">
+                      <div
+                        class="dynamic-island glass"
+                        [class.expanded]="demoIslandExpanded()"
+                        (click)="demoIslandExpanded.set(!demoIslandExpanded())"
+                      >
+                        <div class="di-icon">🎵</div>
+                        <div class="di-content">
+                          <strong>Now Playing</strong>
+                          <small>Starboy • The Weeknd</small>
+                        </div>
+                        <div class="di-waves">
+                          <span class="di-wave"></span>
+                          <span class="di-wave"></span>
+                          <span class="di-wave"></span>
+                          <span class="di-wave"></span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('weather') {
+                    <div class="demo-box" style="width: min(440px, 100%)">
+                      <div class="weather-card glass" style="width: 100%">
+                        <div class="weather-top">
+                          <div>
+                            <span class="category-tag">São Paulo</span>
+                            <div class="weather-temp">24°</div>
+                            <p style="color: var(--text-dim); font-size: 0.9rem">Ensolarado com brisa fresca</p>
+                          </div>
+                          <div class="weather-icon">☀️</div>
+                        </div>
+                        <div class="weather-days">
+                          <div class="weather-day-pill"><span>Hoje</span><strong>24°</strong><span>☀️</span></div>
+                          <div class="weather-day-pill"><span>Qui</span><strong>22°</strong><span>⛅</span></div>
+                          <div class="weather-day-pill"><span>Sex</span><strong>19°</strong><span>🌧️</span></div>
+                          <div class="weather-day-pill"><span>Sáb</span><strong>25°</strong><span>🌤️</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('control-center') {
+                    <div class="demo-box" style="width: min(380px, 100%)">
+                      <div class="control-grid" style="width: 100%">
+                        <div
+                          class="control-tile"
+                          [class.active]="demoWifi()"
+                          (click)="demoWifi.set(!demoWifi())"
+                        >
+                          <div class="control-icon">📶</div>
+                          <div>
+                            <strong style="font-size: 0.95rem">Wi-Fi</strong>
+                            <small style="display: block; color: var(--text-dim)">{{ demoWifi() ? 'Conectado' : 'Desativado' }}</small>
+                          </div>
+                        </div>
+                        <div
+                          class="control-tile"
+                          [class.active]="demoBluetooth()"
+                          (click)="demoBluetooth.set(!demoBluetooth())"
+                        >
+                          <div class="control-icon">⚡</div>
+                          <div>
+                            <strong style="font-size: 0.95rem">Bluetooth</strong>
+                            <small style="display: block; color: var(--text-dim)">{{ demoBluetooth() ? 'AirPods Pro' : 'Desativado' }}</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('activity-rings') {
+                    <div class="demo-box">
+                      <div class="activity-card glass">
+                        <div class="activity-rings">
+                          <svg viewBox="0 0 100 100">
+                            <circle class="ring-bg" cx="50" cy="50" r="40" />
+                            <circle class="ring-val ring-move" cx="50" cy="50" r="40" stroke-dasharray="251" stroke-dashoffset="55" />
+                            <circle class="ring-bg" cx="50" cy="50" r="28" />
+                            <circle class="ring-val ring-exercise" cx="50" cy="50" r="28" stroke-dasharray="175" stroke-dashoffset="35" />
+                            <circle class="ring-bg" cx="50" cy="50" r="16" />
+                            <circle class="ring-val ring-stand" cx="50" cy="50" r="16" stroke-dasharray="100" stroke-dashoffset="15" />
+                          </svg>
+                        </div>
+                        <div class="activity-metrics">
+                          <div class="metric-row"><span class="metric-dot" style="background:#ff2a6d"></span> <strong>580 / 600</strong> kcal</div>
+                          <div class="metric-row"><span class="metric-dot" style="background:#05ffa1"></span> <strong>38 / 30</strong> min</div>
+                          <div class="metric-row"><span class="metric-dot" style="background:#00f0ff"></span> <strong>10 / 12</strong> h</div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('stepper') {
+                    <div class="demo-row">
+                      <span class="demo-label">Quantidade:</span>
+                      <div class="glass-stepper glass">
+                        <button (click)="demoStepper.set(demoStepper() - 1)">−</button>
+                        <span>{{ demoStepper() }}</span>
+                        <button (click)="demoStepper.set(demoStepper() + 1)">+</button>
+                      </div>
+                    </div>
+                  }
+                  @case ('checkbox') {
+                    <div class="demo-row">
+                      <label
+                        class="glass-checkbox"
+                        [class.active]="demoCheckbox()"
+                        (click)="demoCheckbox.set(!demoCheckbox())"
+                      >
+                        <span class="glass-check-box">✓</span>
+                        <span>Refração SVG Ativa</span>
+                      </label>
+                    </div>
+                  }
+                  @case ('context-menu') {
+                    <div class="demo-box">
+                      <div class="glass-menu glass">
+                        <div class="glass-menu-item"><span>Duplicar Camada</span><kbd>⌘D</kbd></div>
+                        <div class="glass-menu-item"><span>Exportar CSS</span><kbd>⇧⌘E</kbd></div>
+                        <div class="glass-divider"></div>
+                        <div class="glass-menu-item" style="color: #ff6b8b"><span>Excluir</span><kbd>⌫</kbd></div>
+                      </div>
+                    </div>
+                  }
+                  @case ('toast') {
+                    <div class="demo-box" style="width: min(440px, 100%)">
+                      <div class="glass-toast glass" style="width: 100%">
+                        <span class="toast-dot"></span>
+                        <span style="font-size: 0.9rem; flex: 1">Configurações salvas com sucesso</span>
+                        <button class="btn glass" style="padding: 0.35rem 0.8rem; font-size: 0.78rem">Fechar</button>
+                      </div>
+                    </div>
+                  }
+                  @case ('select-dropdown') {
+                    <div class="demo-box" style="width: min(340px, 100%)">
+                      <div class="glass-select-wrapper" [class.open]="demoSelectOpen()">
+                        <div class="glass-select-trigger glass" (click)="demoSelectOpen.set(!demoSelectOpen())">
+                          <span>{{ demoSelectValue() }}</span>
+                          <span class="chevron">▼</span>
+                        </div>
+                        @if (demoSelectOpen()) {
+                          <div class="glass-select-dropdown glass">
+                            <div
+                              class="glass-option"
+                              [class.selected]="demoSelectValue() === 'Opção 1: Vidro Claro'"
+                              (click)="demoSelectValue.set('Opção 1: Vidro Claro'); demoSelectOpen.set(false)"
+                            >
+                              <span>Opção 1: Vidro Claro</span>
+                              <span>✓</span>
+                            </div>
+                            <div
+                              class="glass-option"
+                              [class.selected]="demoSelectValue() === 'Opção 2: Vidro Fumê'"
+                              (click)="demoSelectValue.set('Opção 2: Vidro Fumê'); demoSelectOpen.set(false)"
+                            >
+                              <span>Opção 2: Vidro Fumê</span>
+                            </div>
+                            <div
+                              class="glass-option"
+                              [class.selected]="demoSelectValue() === 'Opção 3: Vidro Espelhado'"
+                              (click)="demoSelectValue.set('Opção 3: Vidro Espelhado'); demoSelectOpen.set(false)"
+                            >
+                              <span>Opção 3: Vidro Espelhado</span>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @case ('dropzone') {
+                    <div class="demo-box" style="width: min(420px, 100%)">
+                      <div class="glass-dropzone" (click)="demoFileName.set('meu-arquivo-apple.png')">
+                        <div class="dropzone-icon">☁️</div>
+                        <div class="dropzone-text">
+                          <strong>Clique ou solte arquivos aqui</strong>
+                          <small>Imagens, PDFs ou Vetores até 25MB</small>
+                        </div>
+                        @if (demoFileName()) {
+                          <div class="uploaded-chip">📄 {{ demoFileName() }} ✓</div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @case ('validated-input') {
+                    <div class="demo-box" style="width: min(380px, 100%)">
+                      <div class="glass-field-group">
+                        <label class="glass-field-label">
+                          <span>Senha Mestra</span>
+                          <span style="color: var(--accent); font-size: 0.8rem">Segura</span>
+                        </label>
+                        <div class="glass-input-box is-valid">
+                          <span class="input-prefix">🔒</span>
+                          <input
+                            [type]="demoPasswordShow() ? 'text' : 'password'"
+                            value="AppleLiquidGlass#2026"
+                            placeholder="Digite sua senha..."
+                          />
+                          <button
+                            class="input-suffix-btn"
+                            type="button"
+                            (click)="demoPasswordShow.set(!demoPasswordShow())"
+                            title="Alternar visibilidade"
+                          >
+                            {{ demoPasswordShow() ? '👁️' : '🙈' }}
+                          </button>
+                        </div>
+                        <span class="glass-input-msg ok">✓ Senha forte com caracteres especiais</span>
+                      </div>
+                    </div>
+                  }
+                  @case ('textarea-counter') {
+                    <div class="demo-box" style="width: min(420px, 100%)">
+                      <div class="glass-field-group">
+                        <label class="glass-field-label">Descrição do Projeto</label>
+                        <div class="glass-textarea-box">
+                          <textarea
+                            maxlength="200"
+                            [value]="demoTextarea()"
+                            (input)="demoTextarea.set($any($event.target).value)"
+                            placeholder="Escreva seus detalhes aqui..."
+                          ></textarea>
+                          <span class="glass-counter-pill">{{ demoTextarea().length }} / 200</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('skeleton') {
+                    <div class="demo-box" style="width: min(400px, 100%)">
+                      <div class="glass-skeleton-card glass">
+                        <div class="skeleton-row">
+                          <div class="glass-skeleton skeleton-avatar"></div>
+                          <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem">
+                            <div class="glass-skeleton skeleton-title"></div>
+                            <div class="glass-skeleton skeleton-line short"></div>
+                          </div>
+                        </div>
+                        <div class="glass-skeleton skeleton-line"></div>
+                        <div class="glass-skeleton skeleton-line short"></div>
+                      </div>
+                    </div>
+                  }
+                  @case ('progress-bar') {
+                    <div class="demo-box" style="width: min(400px, 100%); display: flex; flex-direction: column; gap: 0.8rem">
+                      <div class="glass-progress-wrapper">
+                        <div class="progress-meta">
+                          <span>Sincronizando com a Nuvem</span>
+                          <span>{{ demoProgress() }}%</span>
+                        </div>
+                        <div class="glass-progress-track">
+                          <div class="glass-progress-bar" [style.width.%]="demoProgress()"></div>
+                        </div>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="100"
+                        [value]="demoProgress()"
+                        (input)="demoProgress.set(val($event))"
+                        style="height: 6px"
+                      />
+                    </div>
+                  }
+                  @case ('spinner') {
+                    <div class="demo-row" style="gap: 2rem">
+                      <div class="glass-spinner" aria-label="Carregando">
+                        <span class="spinner-blade"></span><span class="spinner-blade"></span>
+                        <span class="spinner-blade"></span><span class="spinner-blade"></span>
+                        <span class="spinner-blade"></span><span class="spinner-blade"></span>
+                        <span class="spinner-blade"></span><span class="spinner-blade"></span>
+                      </div>
+                      <span class="demo-label">Processando Efeito...</span>
+                    </div>
+                  }
+                  @case ('alert') {
+                    <div class="demo-box" style="width: min(440px, 100%); display: flex; flex-direction: column; gap: 0.8rem">
+                      <div class="glass-alert info">
+                        <span class="alert-icon">ℹ️</span>
+                        <div class="alert-body">
+                          <strong>Atualização Concluída</strong>
+                          <span>O design system Liquid Glass foi atualizado com sucesso.</span>
+                        </div>
+                      </div>
+                      <div class="glass-alert success">
+                        <span class="alert-icon">✓</span>
+                        <div class="alert-body">
+                          <strong>Sincronização Ativa</strong>
+                          <span>Arquivos de estilo compilados em tempo real.</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('breadcrumbs') {
+                    <div class="demo-box">
+                      <nav class="glass-breadcrumbs glass" aria-label="Breadcrumb">
+                        <a href="#hero" class="breadcrumb-item">Início</a>
+                        <span class="breadcrumb-sep">›</span>
+                        <a href="#components" class="breadcrumb-item">Componentes</a>
+                        <span class="breadcrumb-sep">›</span>
+                        <span class="breadcrumb-item active">Feedback</span>
+                      </nav>
+                    </div>
+                  }
+                  @case ('pagination') {
+                    <div class="demo-box">
+                      <div class="glass-pagination glass">
+                        <button class="page-pill" (click)="demoPage.set(Math.max(1, demoPage() - 1))" aria-label="Anterior">‹</button>
+                        <button class="page-pill" [class.active]="demoPage() === 1" (click)="demoPage.set(1)">1</button>
+                        <button class="page-pill" [class.active]="demoPage() === 2" (click)="demoPage.set(2)">2</button>
+                        <button class="page-pill" [class.active]="demoPage() === 3" (click)="demoPage.set(3)">3</button>
+                        <button class="page-pill" (click)="demoPage.set(Math.min(3, demoPage() + 1))" aria-label="Próximo">›</button>
+                      </div>
+                    </div>
+                  }
+                                    @case ('tooltip') {
+                    <div class="demo-row">
+                      <div class="glass-tooltip-wrapper">
+                        <button class="btn primary glass">Passe o Cursor Aqui</button>
+                        <div class="tooltip-bubble">✦ Efeito Liquid Glass da Apple</div>
+                      </div>
+                      <div class="glass-tooltip-wrapper">
+                        <button class="btn round glass">ℹ️</button>
+                        <div class="tooltip-bubble">Informações Adicionais</div>
+                      </div>
+                    </div>
+                  }
+                  @case ('data-table') {
+                    <div style="width: 100%; max-width: 620px;">
+                      <div class="glass-table-wrapper">
+                        <table class="glass-table">
+                          <thead>
+                            <tr>
+                              <th>{{ i18n.lang() === 'pt' ? 'Cliente / Projeto' : 'Client / Project' }}</th>
+                              <th>{{ i18n.lang() === 'pt' ? 'Módulo' : 'Module' }}</th>
+                              <th>{{ i18n.lang() === 'pt' ? 'Valor' : 'Value' }}</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <strong style="display:block">Apple Inc.</strong>
+                                <small style="color:var(--text-dim)">Cupertino, CA</small>
+                              </td>
+                              <td>Spatial Audio UX</td>
+                              <td>$14,250</td>
+                              <td><span class="status-pill paid">● {{ i18n.lang() === 'pt' ? 'Pago' : 'Paid' }}</span></td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong style="display:block">OpenAI</strong>
+                                <small style="color:var(--text-dim)">San Francisco, CA</small>
+                              </td>
+                              <td>Neural Canvas</td>
+                              <td>$9,800</td>
+                              <td><span class="status-pill pending">◐ {{ i18n.lang() === 'pt' ? 'Pendente' : 'Pending' }}</span></td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <strong style="display:block">Linear App</strong>
+                                <small style="color:var(--text-dim)">Reykjavik, IS</small>
+                              </td>
+                              <td>Glass Tokens</td>
+                              <td>$6,400</td>
+                              <td><span class="status-pill paid">● {{ i18n.lang() === 'pt' ? 'Pago' : 'Paid' }}</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  }
+                  @case ('kpi-card') {
+                    <div class="demo-row" style="width: 100%; max-width: 620px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                      <div class="kpi-card glass">
+                        <div class="kpi-header">
+                          <span class="kpi-title">{{ i18n.lang() === 'pt' ? 'Receita Mensal' : 'Monthly Revenue' }}</span>
+                          <span class="kpi-trend up">↑ 24.8%</span>
+                        </div>
+                        <div class="kpi-value">$142,850</div>
+                        <svg class="kpi-sparkline-svg" viewBox="0 0 200 50">
+                          <defs>
+                            <linearGradient id="spark-kpi-1" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+                              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+                            </linearGradient>
+                          </defs>
+                          <path fill="url(#spark-kpi-1)" d="M 0,45 Q 35,35 60,30 T 110,25 T 160,18 T 200,6 L 200,50 L 0,50 Z"/>
+                          <path class="spark-line" d="M 0,45 Q 35,35 60,30 T 110,25 T 160,18 T 200,6"/>
+                        </svg>
+                      </div>
+
+                      <div class="kpi-card glass">
+                        <div class="kpi-header">
+                          <span class="kpi-title">{{ i18n.lang() === 'pt' ? 'Usuários Ativos' : 'Active Users' }}</span>
+                          <span class="kpi-trend up">↑ 12.3%</span>
+                        </div>
+                        <div class="kpi-value">38.4k</div>
+                        <svg class="kpi-sparkline-svg" viewBox="0 0 200 50">
+                          <defs>
+                            <linearGradient id="spark-kpi-2" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#34d399" stop-opacity="0.35"/>
+                              <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+                            </linearGradient>
+                          </defs>
+                          <path fill="url(#spark-kpi-2)" d="M 0,38 Q 40,42 75,28 T 130,22 T 170,12 T 200,8 L 200,50 L 0,50 Z"/>
+                          <path class="spark-line" style="stroke:#34d399; filter:drop-shadow(0 2px 6px rgba(52,211,153,0.5))" d="M 0,38 Q 40,42 75,28 T 130,22 T 170,12 T 200,8"/>
+                        </svg>
+                      </div>
+                    </div>
+                  }
+                  @case ('avatar-group') {
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center;">
+                      <div class="glass-avatar-group">
+                        <div class="glass-avatar" style="background: linear-gradient(135deg, #3b82f6, #06b6d4)" title="Alex Rivera">
+                          AR
+                          <span class="avatar-status-dot"></span>
+                        </div>
+                        <div class="glass-avatar" style="background: linear-gradient(135deg, #a855f7, #ec4899)" title="Sarah Chen">
+                          SC
+                          <span class="avatar-status-dot"></span>
+                        </div>
+                        <div class="glass-avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444)" title="Liam Vance">
+                          LV
+                        </div>
+                        <div class="glass-avatar" style="background: linear-gradient(135deg, #10b981, #3b82f6)" title="Julia Dias">
+                          JD
+                        </div>
+                        <div class="glass-avatar counter" title="+6 outros">+6</div>
+                      </div>
+                      <small style="color: var(--text-dim); font-size: 0.8rem;">
+                        {{ i18n.lang() === 'pt' ? 'Passe o cursor sobre os avatares para efeito de elevação e anel especular' : 'Hover over avatars for elevation and specular rim' }}
+                      </small>
+                    </div>
+                  }
+                  @case ('accordion') {
+                    <div class="glass-accordion" style="width: 100%; max-width: 580px;">
+                      <div class="accordion-item" [class.open]="demoAccordionIndex() === 0">
+                        <div class="accordion-trigger" (click)="toggleAccordion(0)">
+                          <span>✦ {{ i18n.lang() === 'pt' ? 'O que define o material Liquid Glass?' : 'What defines Liquid Glass material?' }}</span>
+                          <span class="chevron">▼</span>
+                        </div>
+                        @if (demoAccordionIndex() === 0) {
+                          <div class="accordion-content">
+                            {{ i18n.lang() === 'pt'
+                              ? 'O Liquid Glass combina backdrop-filter blur com bordas de luz chanfradas (specular rim) e refração dinâmica que reage a movimentos e profundidade.'
+                              : 'Liquid Glass combines backdrop-filter blur with specular highlight rims and dynamic refraction reacting to cursor movement and depth.' }}
+                          </div>
+                        }
+                      </div>
+
+                      <div class="accordion-item" [class.open]="demoAccordionIndex() === 1">
+                        <div class="accordion-trigger" (click)="toggleAccordion(1)">
+                          <span>✦ {{ i18n.lang() === 'pt' ? 'Qual o impacto no desempenho gráfico (FPS)?' : 'What is the performance impact on FPS?' }}</span>
+                          <span class="chevron">▼</span>
+                        </div>
+                        @if (demoAccordionIndex() === 1) {
+                          <div class="accordion-content">
+                            {{ i18n.lang() === 'pt'
+                              ? 'Utilizando aceleração por GPU com will-change: transform e backdrop-filter nativo do CSS, mantemos taxa estável de 60-120 FPS sem sobrecarregar a CPU.'
+                              : 'By leveraging GPU hardware acceleration via will-change: transform and native CSS backdrop-filter, we maintain a solid 60-120 FPS.' }}
+                          </div>
+                        }
+                      </div>
+
+                      <div class="accordion-item" [class.open]="demoAccordionIndex() === 2">
+                        <div class="accordion-trigger" (click)="toggleAccordion(2)">
+                          <span>✦ {{ i18n.lang() === 'pt' ? 'Como exportar os estilos para Angular ou Vue?' : 'How to export styles to Angular or Vue?' }}</span>
+                          <span class="chevron">▼</span>
+                        </div>
+                        @if (demoAccordionIndex() === 2) {
+                          <div class="accordion-content">
+                            {{ i18n.lang() === 'pt'
+                              ? 'Todas as classes CSS utilizam tokens globais (--glass-blur, --glass-radius) definidos em styles.css, prontos para qualquer framework moderno.'
+                              : 'All CSS classes leverage global design tokens (--glass-blur, --glass-radius) declared in styles.css, ready for any modern framework.' }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @case ('timeline') {
+                    <div style="width: 100%; max-width: 520px; padding: 0.5rem 0;">
+                      <div class="glass-timeline">
+                        <div class="timeline-stem"></div>
+
+                        <div class="timeline-item">
+                          <div class="timeline-node" style="color: #38bdf8;">✦</div>
+                          <span class="timeline-date">{{ i18n.lang() === 'pt' ? 'Hoje, 15:40' : 'Today, 3:40 PM' }}</span>
+                          <strong class="timeline-title">{{ i18n.lang() === 'pt' ? 'Módulo Dashboard & Dados Ativado' : 'Dashboard & Data Module Live' }}</strong>
+                          <p class="timeline-desc">{{ i18n.lang() === 'pt' ? 'Tabelas translúcidas, cartões KPI e nós luminosos integrados com sucesso.' : 'Translucent data tables, KPI metrics and luminous nodes integrated.' }}</p>
+                        </div>
+
+                        <div class="timeline-item">
+                          <div class="timeline-node" style="color: #34d399;">✓</div>
+                          <span class="timeline-date">{{ i18n.lang() === 'pt' ? 'Ontem, 19:20' : 'Yesterday, 7:20 PM' }}</span>
+                          <strong class="timeline-title">{{ i18n.lang() === 'pt' ? 'Pacote Feedback & Navegação' : 'Feedback & Nav Suite Deployed' }}</strong>
+                          <p class="timeline-desc">{{ i18n.lang() === 'pt' ? 'Skeletons, progress bars, spinner iOS e alertas validados em 60 FPS.' : 'Skeletons, progress bars, iOS spinner and alerts benchmarked.' }}</p>
+                        </div>
+
+                        <div class="timeline-item">
+                          <div class="timeline-node" style="color: #a855f7;">⚡</div>
+                          <span class="timeline-date">{{ i18n.lang() === 'pt' ? '20 Out, 10:15' : 'Oct 20, 10:15 AM' }}</span>
+                          <strong class="timeline-title">{{ i18n.lang() === 'pt' ? 'PWA Offline & Service Worker' : 'PWA Offline & Service Worker' }}</strong>
+                          <p class="timeline-desc">{{ i18n.lang() === 'pt' ? 'Cache inteligente de assets e manifesto de instalação configurados.' : 'Smart asset caching and install manifest registered.' }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  }
                 }
               </div>
             </div>

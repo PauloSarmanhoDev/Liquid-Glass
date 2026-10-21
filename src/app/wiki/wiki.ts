@@ -15,6 +15,7 @@ export class Wiki {
 
   readonly categories = WIKI_CATEGORIES;
   readonly allDocs = COMPONENTS_DOCS;
+  protected readonly Math = Math;
 
   readonly search = signal('');
   readonly selectedCategory = signal<WikiCategory['id']>('all');
@@ -29,7 +30,26 @@ export class Wiki {
   readonly demoSwitch = signal(true);
   readonly demoSlider = signal(65);
   readonly demoSegment = signal(0);
-  readonly demoDockItems = ['📁', '🌐', '💬', '📷', '🎵'];
+  readonly demoDockItems = ['🚀', '🎨', '⚙️', '💎', '🧭'];
+  readonly demoIslandExpanded = signal(false);
+  readonly demoWifi = signal(true);
+  readonly demoBluetooth = signal(true);
+  readonly demoStepper = signal(3);
+  readonly demoCheckbox = signal(true);
+  readonly demoToast = signal(true);
+  readonly demoSelectOpen = signal(false);
+  readonly demoSelectValue = signal('Opção 1: Vidro Claro');
+  readonly demoFileName = signal<string | null>('preview-design.fig');
+  readonly demoPasswordShow = signal(false);
+  readonly demoTextarea = signal('Liquid Glass combina beleza e legibilidade no frontend moderno.');
+  readonly demoProgress = signal(74);
+  readonly demoPage = signal(2);
+  readonly demoAlertClosed = signal(false);
+  readonly demoAccordionIndex = signal<number | null>(0);
+
+  toggleAccordion(idx: number) {
+    this.demoAccordionIndex.update((curr) => (curr === idx ? null : idx));
+  }
 
   readonly filteredDocs = computed(() => {
     const q = this.search().trim().toLowerCase();

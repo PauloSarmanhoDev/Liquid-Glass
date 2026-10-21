@@ -72,8 +72,27 @@ export class App implements OnInit {
   protected readonly modal = signal(false);
   protected readonly tabs = ['🏠', '🔍', '🎵', '⚙️'];
   protected readonly tabLabels = ['Home', 'Search', 'Music', 'Settings'];
-  protected readonly dockItems = ['📁', '🌐', '💬', '📷', '🎵', '🗓️', '⚙️'];
+  protected readonly dockItems = ['🚀', '🎨', '⚙️', '💎', '🧭', '📱', '🔔'];
   protected readonly compare = signal(50);
+  protected readonly dynamicIslandOpen = signal(false);
+  protected readonly wifiActive = signal(true);
+  protected readonly btActive = signal(true);
+  protected readonly stepperVal = signal(4);
+  protected readonly checkVal = signal(true);
+  protected readonly selectOpen = signal(false);
+  protected readonly selectVal = signal('Opção 1: Vidro Claro');
+  protected readonly uploadedFile = signal<string | null>('documento-glass.pdf');
+  protected readonly passwordShown = signal(false);
+  protected readonly textareaVal = signal('Vidro líquido translúcido com acabamento de alta fidelidade.');
+  protected readonly galleryProgress = signal(68);
+  protected readonly galleryPage = signal(2);
+  protected readonly galleryAccordion = signal<number | null>(0);
+  protected readonly galleryKpiRevenue = signal('$142,850');
+  protected readonly Math = Math;
+
+  toggleGalleryAccordion(idx: number) {
+    this.galleryAccordion.update((curr) => (curr === idx ? null : idx));
+  }
 
   // nav
   protected readonly active = signal('hero');
