@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+ï»¿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
   --bg-1: #0b0d1f;
@@ -29,6 +29,7 @@ body {
 h1, h2, h3 { letter-spacing: -0.03em; line-height: 1.05; }
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; }
+a { color: inherit; text-decoration: none; }
 code, pre { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
 /* ---------- Animated backdrop ---------- */
@@ -103,8 +104,33 @@ section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
 .lang-btn:hover { background: rgba(255,255,255,0.26); transform: scale(1.06); }
 
 /* ---------- Buttons ---------- */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.95rem 1.7rem; font-weight: 600; --glass-radius: 999px;
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.7rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  --glass-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), color 0.2s;
+}
+.btn, .btn:visited, .btn:active, .btn:focus {
+  color: var(--text);
+  text-decoration: none;
+}
+.btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  color: #ffffff;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn.primary, .btn.primary:visited {
+  color: #ffffff;
+}
 .btn:hover { transform: translateY(-2px) scale(1.04); }
 .btn:active { transform: scale(0.96); }
 .btn.primary { --glass-tint: 0.1; background: linear-gradient(135deg, rgba(110,168,255,0.55), rgba(196,139,255,0.45)); }
@@ -366,7 +392,7 @@ footer { text-align: center; padding: 3rem 1rem 7rem; color: var(--text-dim); fo
 .glass-menu-item kbd { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; padding: 0.15rem 0.4rem; border-radius: 6px; background: rgba(255,255,255,0.1); }
 .glass-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 0.3rem 0; }
 
-/* ---------- Package 2: Formulários Completos ---------- */
+/* ---------- Package 2: Formulï¿½rios Completos ---------- */
 
 /* 1. Glass Select / Dropdown */
 .glass-select-wrapper { position: relative; width: 100%; min-width: 220px; }
@@ -476,7 +502,7 @@ footer { text-align: center; padding: 3rem 1rem 7rem; color: var(--text-dim); fo
   background: rgba(0,0,0,0.3); color: var(--text-dim); pointer-events: none;
 }
 
-/* ---------- Pacote 3: Feedback & Navegação ---------- */
+/* ---------- Pacote 3: Feedback & Navegaï¿½ï¿½o ---------- */
 
 /* 1. Skeleton Shimmer Loader */
 .glass-skeleton-card {
