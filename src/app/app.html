@@ -1,0 +1,289 @@
+<!-- SVG refraction filter (used by the playground lens) -->
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <filter id="refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="4" result="noise" />
+    <feGaussianBlur in="noise" stdDeviation="2" result="soft" />
+    <feDisplacementMap in="SourceGraphic" in2="soft" [attr.scale]="refraction()" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<div class="backdrop" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<nav class="nav glass" aria-label="Main">
+  <a class="brand" href="#hero" style="text-decoration: none; color: inherit"><i></i><span>Liquid Glass</span></a>
+  <div class="nav-links">
+    <a href="#components" [class.active]="active() === 'components'">{{ t('nav.components') }}</a>
+    <a href="#compare" [class.active]="active() === 'compare'">{{ t('nav.compare') }}</a>
+    <a href="#playground" [class.active]="active() === 'playground'">{{ t('nav.playground') }}</a>
+    <a href="#how" [class.active]="active() === 'how'">{{ t('nav.how') }}</a>
+    <button class="lang-btn" id="lang-toggle" (click)="i18n.toggle()" aria-label="Language">
+      {{ i18n.lang() === 'pt' ? 'EN' : 'PT' }}
+    </button>
+  </div>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section id="hero" class="hero">
+    <div class="container hero-grid">
+      <div class="reveal">
+        <span class="badge glass">{{ t('hero.badge') }}</span>
+        <h1 class="grad-text">{{ t('hero.title') }}</h1>
+        <p class="lead">{{ t('hero.subtitle') }}</p>
+        <div class="hero-actions">
+          <a class="btn primary glass" id="cta-components" href="#components" style="text-decoration: none">{{ t('hero.cta1') }}</a>
+          <a class="btn glass" id="cta-playground" href="#playground" style="text-decoration: none">{{ t('hero.cta2') }}</a>
+          @if (installEvent()) {
+            <button class="btn glass" id="install-btn" (click)="install()">⬇ {{ t('hero.install') }}</button>
+          }
+        </div>
+        <div class="chips">
+          <span class="chip glass">{{ t('hero.f1') }}</span>
+          <span class="chip glass">{{ t('hero.f2') }}</span>
+          <span class="chip glass">{{ t('hero.f3') }}</span>
+          <span class="chip glass">{{ t('offline') }}</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orb big"></div>
+        <div class="lens l1 glass">Liquid</div>
+        <div class="lens l2 glass">✦</div>
+        <div class="lens l3 glass">Glass</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section id="components">
+    <div class="container">
+      <div class="section-head">
+        <h2>{{ t('gal.title') }}</h2>
+        <p>{{ t('gal.subtitle') }}</p>
+      </div>
+      <div class="gallery">
+        <div class="panel glass">
+          <h3>{{ t('gal.buttons') }}</h3>
+          <div class="row">
+            <button class="btn primary glass">{{ t('gal.btn.primary') }}</button>
+            <button class="btn glass">{{ t('gal.btn.secondary') }}</button>
+            <button class="btn round glass" aria-label="Like">♥</button>
+            <button class="btn round glass" aria-label="Share">⤴</button>
+          </div>
+        </div>
+
+        <div class="panel glass">
+          <h3>{{ t('gal.controls') }}</h3>
+          <div class="switch-row">
+            <span>✈️ {{ t('gal.switch') }}</span>
+            <button class="switch" id="switch-airplane" role="switch" [attr.aria-checked]="airplane()" [class.on]="airplane()" (click)="airplane.set(!airplane())">
+              <span class="knob glass"></span>
+            </button>
+          </div>
+          <div class="slider-wrap">
+            <label for="brightness">{{ t('gal.slider') }} <span>{{ brightness() }}%</span></label>
+            <input id="brightness" type="range" min="0" max="100" [value]="brightness()" [style.--fill]="fill(brightness())" (input)="brightness.set(val($event))" />
+          </div>
+        </div>
+
+        <div class="panel glass">
+          <h3>{{ t('gal.segment') }}</h3>
+          <div class="segment glass" role="tablist">
+            <span class="thumb" [style.transform]="'translateX(' + segment() * 100 + '%)'"></span>
+            <button role="tab" id="seg-0" [class.on]="segment() === 0" (click)="segment.set(0)">{{ t('gal.seg.day') }}</button>
+            <button role="tab" id="seg-1" [class.on]="segment() === 1" (click)="segment.set(1)">{{ t('gal.seg.week') }}</button>
+            <button role="tab" id="seg-2" [class.on]="segment() === 2" (click)="segment.set(2)">{{ t('gal.seg.month') }}</button>
+          </div>
+          <div class="search glass"><span>🔍</span><input id="search" type="search" [placeholder]="t('gal.search')" /></div>
+        </div>
+
+        <div class="panel glass">
+          <h3>{{ t('gal.card') }}</h3>
+          <div class="media-card">
+            <div class="cover"></div>
+            <div>
+              <h4>{{ t('gal.card.title') }}</h4>
+              <p>{{ t('gal.card.text') }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn round glass" aria-label="Previous">⏮</button>
+            <button class="btn round primary glass" aria-label="Play">▶</button>
+            <button class="btn round glass" aria-label="Next">⏭</button>
+          </div>
+        </div>
+
+        <div class="panel glass">
+          <h3>{{ t('gal.modal') }}</h3>
+          <div class="row">
+            <button class="btn primary glass" id="open-sheet" (click)="modal.set(true)">{{ t('gal.modal.open') }}</button>
+          </div>
+        </div>
+
+        <div class="panel glass">
+          <h3>{{ t('gal.tabbar') }}</h3>
+          <div class="tabbar glass">
+            @for (icon of tabs; track icon; let i = $index) {
+              <button [class.on]="tab() === i" [attr.aria-label]="tabLabels[i]" (click)="tab.set(i)">
+                {{ icon }}<small>{{ tabLabels[i] }}</small>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="panel glass span2">
+          <h3>{{ t('gal.dock') }}</h3>
+          <div class="dock glass" (pointermove)="dockMove($event)" (pointerleave)="dockLeave($event)">
+            @for (icon of dockItems; track icon) {
+              <button class="dock-item" aria-label="app">{{ icon }}</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="compare">
+    <div class="container">
+      <div class="section-head">
+        <h2>{{ t('cmp.title') }}</h2>
+        <p>{{ t('cmp.subtitle') }}</p>
+      </div>
+      <div class="compare glass" [style.--pos]="compare() + '%'">
+        <div class="cmp-bg">
+          <div class="cmp-text">Liquid<br />Glass</div>
+          <div class="stripes"></div>
+        </div>
+        <div class="cmp-glass"></div>
+        <span class="cmp-label l">{{ t('cmp.before') }}</span>
+        <span class="cmp-label r">{{ t('cmp.after') }}</span>
+        <span class="cmp-line"></span>
+        <input type="range" id="compare-slider" min="0" max="100" [value]="compare()" aria-label="Compare" (input)="compare.set(val($event))" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYGROUND -->
+  <section id="playground">
+    <div class="container">
+      <div class="section-head">
+        <h2>{{ t('pg.title') }}</h2>
+        <p>{{ t('pg.subtitle') }}</p>
+      </div>
+      <div class="pg-grid">
+        <div>
+          <div
+            #stage
+            class="stage"
+            [style.--glass-blur]="blur() + 'px'"
+            [style.--glass-sat]="saturation() + '%'"
+            [style.--glass-tint]="opacity() / 100"
+          >
+            <div class="stripes"></div>
+            <div class="stage-text">
+              <span>Liquid<br />Glass</span>
+              <small>{{ t('pg.bgText') }}</small>
+            </div>
+            <div
+              class="pg-lens"
+              id="pg-lens"
+              [style.transform]="'translate(' + pos().x + 'px,' + pos().y + 'px)'"
+              [style.border-radius.px]="radius() * 2.5"
+              [style.box-shadow]="'inset 0 1px 0 rgba(255,255,255,' + specular() / 100 + '), inset 0 0 0 1px rgba(255,255,255,' + specular() / 300 + '), 0 18px 40px -12px rgba(0,0,0,.45)'"
+              (pointerdown)="down($event)"
+              (pointermove)="move($event)"
+              (pointerup)="up()"
+              (pointercancel)="up()"
+            >
+              ⠿
+            </div>
+          </div>
+          <pre class="code glass">{{ css() }}</pre>
+        </div>
+
+        <div class="controls glass">
+          <div class="slider-wrap">
+            <label for="c-blur">{{ t('pg.blur') }} <span>{{ blur() }}px</span></label>
+            <input id="c-blur" type="range" min="0" max="40" [value]="blur()" [style.--fill]="fill(blur(), 0, 40)" (input)="blur.set(val($event))" />
+          </div>
+          <div class="slider-wrap">
+            <label for="c-opacity">{{ t('pg.opacity') }} <span>{{ opacity() }}%</span></label>
+            <input id="c-opacity" type="range" min="0" max="60" [value]="opacity()" [style.--fill]="fill(opacity(), 0, 60)" (input)="opacity.set(val($event))" />
+          </div>
+          <div class="slider-wrap">
+            <label for="c-refraction">{{ t('pg.refraction') }} <span>{{ refraction() }}</span></label>
+            <input id="c-refraction" type="range" min="0" max="150" [value]="refraction()" [style.--fill]="fill(refraction(), 0, 150)" (input)="refraction.set(val($event))" />
+          </div>
+          <div class="slider-wrap">
+            <label for="c-saturation">{{ t('pg.saturation') }} <span>{{ saturation() }}%</span></label>
+            <input id="c-saturation" type="range" min="100" max="300" [value]="saturation()" [style.--fill]="fill(saturation(), 100, 300)" (input)="saturation.set(val($event))" />
+          </div>
+          <div class="slider-wrap">
+            <label for="c-specular">{{ t('pg.specular') }} <span>{{ specular() }}%</span></label>
+            <input id="c-specular" type="range" min="0" max="100" [value]="specular()" [style.--fill]="fill(specular())" (input)="specular.set(val($event))" />
+          </div>
+          <div class="slider-wrap">
+            <label for="c-radius">{{ t('pg.radius') }} <span>{{ radius() }}px</span></label>
+            <input id="c-radius" type="range" min="0" max="80" [value]="radius()" [style.--fill]="fill(radius(), 0, 80)" (input)="radius.set(val($event))" />
+          </div>
+          <div class="actions">
+            <button class="btn primary glass" id="copy-css" (click)="copy()">{{ copied() ? t('pg.copied') : t('pg.copy') }}</button>
+            <button class="btn glass" id="reset" (click)="reset()">{{ t('pg.reset') }}</button>
+          </div>
+          <p class="note">{{ t('pg.note') }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <div class="container">
+      <div class="section-head">
+        <h2>{{ t('how.title') }}</h2>
+        <p>{{ t('how.subtitle') }}</p>
+      </div>
+      <div class="steps">
+        <article class="step glass">
+          <h3>{{ t('how.s1') }}</h3>
+          <p>{{ t('how.s1d') }}</p>
+          <pre>{{ snippets.blur }}</pre>
+        </article>
+        <article class="step glass">
+          <h3>{{ t('how.s2') }}</h3>
+          <p>{{ t('how.s2d') }}</p>
+          <pre>{{ snippets.tint }}</pre>
+        </article>
+        <article class="step glass">
+          <h3>{{ t('how.s3') }}</h3>
+          <p>{{ t('how.s3d') }}</p>
+          <pre>{{ snippets.edge }}</pre>
+        </article>
+        <article class="step glass">
+          <h3>{{ t('how.s4') }}</h3>
+          <p>{{ t('how.s4d') }}</p>
+          <pre>{{ snippets.svg }}</pre>
+        </article>
+        <article class="step glass">
+          <h3>{{ t('how.s5') }}</h3>
+          <p>{{ t('how.s5d') }}</p>
+          <pre>{{ snippets.a11y }}</pre>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>{{ t('footer') }}</footer>
+
+@if (modal()) {
+  <div class="scrim" (click)="modal.set(false)">
+    <div class="sheet glass" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>{{ t('gal.modal.title') }}</h3>
+      <p>{{ t('gal.modal.text') }}</p>
+      <button class="btn primary glass" id="close-sheet" (click)="modal.set(false)">{{ t('gal.modal.close') }}</button>
+    </div>
+  </div>
+}
