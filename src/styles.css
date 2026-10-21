@@ -244,3 +244,12 @@ footer { text-align: center; padding: 3rem 1rem 7rem; color: var(--text-dim); fo
 .cmp-label { position: absolute; top: 1rem; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; background: rgba(0,0,0,0.4); }
 .cmp-label.l { left: 1rem; } .cmp-label.r { right: 1rem; }
 .compare input[type='range'] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; background: none; }
+
+/* ---------- View Switcher in Navbar ---------- */
+.view-switch { display: inline-flex; background: rgba(255,255,255,0.1); padding: 3px; border-radius: 999px; gap: 2px; }
+.view-switch-btn { padding: 0.42rem 0.9rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: var(--text-dim); transition: all 0.25s var(--ease); }
+.view-switch-btn:hover { color: #fff; }
+.view-switch-btn.active { color: #fff; background: rgba(255,255,255,0.22); box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); }
+@media (max-width: 640px) {
+  .view-switch-btn { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+}

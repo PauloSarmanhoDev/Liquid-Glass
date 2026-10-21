@@ -1,0 +1,332 @@
+<div class="wiki-root">
+  <!-- WIKI HEADER -->
+  <header class="wiki-hero">
+    <div class="wiki-hero-content">
+      <span class="badge glass">Apple HIG & Bootstrap Style</span>
+      <h1 class="grad-text">{{ t('wiki.title') }}</h1>
+      <p class="lead">{{ t('wiki.subtitle') }}</p>
+
+      <div class="wiki-toolbar">
+        <div class="search glass wiki-search-box">
+          <span>🔍</span>
+          <input
+            type="search"
+            [placeholder]="t('wiki.search')"
+            [value]="search()"
+            (input)="search.set(val($event) ? '' + $any($event.target).value : '')"
+            aria-label="Search components"
+          />
+          @if (search()) {
+            <button class="clear-btn" (click)="search.set('')" aria-label="Limpar busca">✕</button>
+          }
+        </div>
+
+        <div class="bg-switcher glass">
+          <span class="bg-label">{{ t('wiki.bg') }}</span>
+          <div class="bg-buttons">
+            <button
+              class="bg-btn cosmic"
+              [class.active]="previewBg() === 'cosmic'"
+              (click)="previewBg.set('cosmic')"
+              title="Cosmic"
+            >
+              {{ t('wiki.bg.cosmic') }}
+            </button>
+            <button
+              class="bg-btn sunset"
+              [class.active]="previewBg() === 'sunset'"
+              (click)="previewBg.set('sunset')"
+              title="Sunset"
+            >
+              {{ t('wiki.bg.sunset') }}
+            </button>
+            <button
+              class="bg-btn emerald"
+              [class.active]="previewBg() === 'emerald'"
+              (click)="previewBg.set('emerald')"
+              title="Emerald"
+            >
+              {{ t('wiki.bg.emerald') }}
+            </button>
+            <button
+              class="bg-btn dark"
+              [class.active]="previewBg() === 'dark'"
+              (click)="previewBg.set('dark')"
+              title="Dark Slate"
+            >
+              {{ t('wiki.bg.dark') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- WIKI BODY GRID -->
+  <div class="wiki-layout">
+    <!-- SIDEBAR CATEGORIES -->
+    <aside class="wiki-sidebar">
+      <div class="sidebar-inner glass">
+        <h4 class="sidebar-title">Categorias</h4>
+        <nav class="sidebar-nav" aria-label="Component categories">
+          @for (cat of categories; track cat.id) {
+            <button
+              class="cat-item"
+              [class.active]="selectedCategory() === cat.id"
+              (click)="selectedCategory.set(cat.id)"
+            >
+              <span class="cat-icon">{{ cat.icon }}</span>
+              <span class="cat-label">{{ i18n.lang() === 'pt' ? cat.labelPt : cat.labelEn }}</span>
+              <span class="cat-count">{{ getCategoryCount(cat.id) }}</span>
+            </button>
+          }
+        </nav>
+      </div>
+    </aside>
+
+    <!-- MAIN COMPONENT FEED -->
+    <main class="wiki-content">
+      @if (filteredDocs().length === 0) {
+        <div class="empty-state glass">
+          <div class="empty-icon">🔍</div>
+          <h3>{{ t('wiki.empty') }}</h3>
+          <button class="btn primary glass" (click)="search.set(''); selectedCategory.set('all')">
+            Limpar Filtros
+          </button>
+        </div>
+      }
+
+      @for (doc of filteredDocs(); track doc.id) {
+        <article class="doc-card glass" [id]="'doc-' + doc.id">
+          <!-- CARD HEADER -->
+          <div class="doc-header">
+            <div>
+              <div class="doc-meta">
+                <span class="category-tag">{{ doc.category }}</span>
+                <span class="doc-id-pill">#{{ doc.id }}</span>
+              </div>
+              <h2 class="doc-title">{{ i18n.lang() === 'pt' ? doc.namePt : doc.nameEn }}</h2>
+              <p class="doc-tagline">{{ i18n.lang() === 'pt' ? doc.taglinePt : doc.taglineEn }}</p>
+            </div>
+            <a class="anchor-link" [href]="'#doc-' + doc.id" title="Link direto">🔗</a>
+          </div>
+
+          <p class="doc-desc">{{ i18n.lang() === 'pt' ? doc.descPt : doc.descEn }}</p>
+
+          <!-- LIVE PREVIEW CANVAS -->
+          <div class="preview-section">
+            <div class="preview-header">
+              <span class="preview-title">
+                <span class="pulse-dot"></span> {{ t('wiki.preview') }}
+              </span>
+            </div>
+
+            <div class="preview-stage" [attr.data-bg]="previewBg()">
+              <div class="stage-watermark">Liquid Glass</div>
+
+              <div class="preview-inner">
+                @switch (doc.id) {
+                  @case ('buttons') {
+                    <div class="demo-row">
+                      <button class="btn primary glass">Primary Glass</button>
+                      <button class="btn glass">Secondary</button>
+                      <button class="btn round glass" aria-label="Favorito">♥</button>
+                      <button class="btn round primary glass" aria-label="Ação">✦</button>
+                    </div>
+                  }
+                  @case ('switch') {
+                    <div class="demo-row">
+                      <span class="demo-label">Ativar Efeito:</span>
+                      <button
+                        class="switch"
+                        role="switch"
+                        [attr.aria-checked]="demoSwitch()"
+                        [class.on]="demoSwitch()"
+                        (click)="demoSwitch.set(!demoSwitch())"
+                      >
+                        <span class="knob glass"></span>
+                      </button>
+                      <span class="status-badge">{{ demoSwitch() ? 'Ligado' : 'Desligado' }}</span>
+                    </div>
+                  }
+                  @case ('slider') {
+                    <div class="demo-box" style="width: min(340px, 100%)">
+                      <div class="slider-wrap">
+                        <label for="demo-slider">Intensidade <span>{{ demoSlider() }}%</span></label>
+                        <input
+                          id="demo-slider"
+                          type="range"
+                          min="0"
+                          max="100"
+                          [value]="demoSlider()"
+                          [style.--fill]="demoSlider() + '%'"
+                          (input)="demoSlider.set(val($event))"
+                        />
+                      </div>
+                    </div>
+                  }
+                  @case ('segment') {
+                    <div class="demo-box" style="width: min(380px, 100%)">
+                      <div class="segment glass" role="tablist">
+                        <span class="thumb" [style.transform]="'translateX(' + demoSegment() * 100 + '%)'"></span>
+                        <button [class.on]="demoSegment() === 0" (click)="demoSegment.set(0)">Design</button>
+                        <button [class.on]="demoSegment() === 1" (click)="demoSegment.set(1)">Código</button>
+                        <button [class.on]="demoSegment() === 2" (click)="demoSegment.set(2)">Tokens</button>
+                      </div>
+                    </div>
+                  }
+                  @case ('input-search') {
+                    <div class="demo-box" style="width: min(380px, 100%)">
+                      <div class="search glass">
+                        <span>🔍</span>
+                        <input type="search" placeholder="Pesquisar componentes..." />
+                      </div>
+                    </div>
+                  }
+                  @case ('cards') {
+                    <div class="demo-box" style="width: min(420px, 100%)">
+                      <div class="panel glass" style="padding: 1.2rem">
+                        <div class="media-card">
+                          <div class="cover"></div>
+                          <div>
+                            <h4>Symphony of Glass</h4>
+                            <p>Ambient & Spatial Sound</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('badges') {
+                    <div class="demo-row">
+                      <span class="badge glass">Apple Glass</span>
+                      <span class="chip glass">Backdrop Blur</span>
+                      <span class="chip glass">Refraction</span>
+                      <span class="chip glass" style="background: rgba(110,168,255,0.25)">Active Pill</span>
+                    </div>
+                  }
+                  @case ('dock') {
+                    <div class="dock glass" (pointermove)="dockMove($event)" (pointerleave)="dockLeave($event)">
+                      @for (icon of demoDockItems; track icon) {
+                        <button class="dock-item">{{ icon }}</button>
+                      }
+                    </div>
+                  }
+                  @case ('navbar') {
+                    <div class="demo-box" style="width: 100%">
+                      <div class="nav glass" style="position: relative; top: auto; left: auto; transform: none; width: 100%">
+                        <div class="brand"><i></i><span>Showcase</span></div>
+                        <div class="nav-links">
+                          <a href="javascript:void(0)" class="active">Visão Geral</a>
+                          <a href="javascript:void(0)">Elementos</a>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('sheet-modal') {
+                    <div class="demo-box" style="width: min(440px, 100%)">
+                      <div class="sheet glass" style="animation: none; width: 100%; padding: 1.4rem">
+                        <h3 style="font-size: 1.25rem">Janela de Diálogo Glass</h3>
+                        <p style="font-size: 0.9rem">
+                          Elevada com sombra ambiente e contorno de alta luminância.
+                        </p>
+                        <div style="display: flex; gap: 0.6rem; margin-top: 0.8rem">
+                          <button class="btn primary glass" style="padding: 0.5rem 1rem; font-size: 0.85rem">Confirmar</button>
+                          <button class="btn glass" style="padding: 0.5rem 1rem; font-size: 0.85rem">Cancelar</button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  @case ('recipe-tokens') {
+                    <div class="demo-box" style="width: min(420px, 100%)">
+                      <div
+                        class="glass"
+                        style="padding: 1.5rem; text-align: center; --glass-blur: 24px; --glass-tint: 0.16"
+                      >
+                        <span style="font-size: 1.8rem">💎</span>
+                        <h4 style="margin-top: 0.4rem">Fórmula de Vidro Pura</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.4rem">
+                          Blur 24px + Tint 0.16 + Rim Mask
+                        </p>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- CODE SNIPPET TABS -->
+          <div class="code-tabs-wrapper">
+            <div class="code-tabs-header">
+              <div class="tabs-nav">
+                <button
+                  class="code-tab-btn"
+                  [class.active]="getActiveTab(doc.id) === 'html'"
+                  (click)="setTab(doc.id, 'html')"
+                >
+                  HTML
+                </button>
+                <button
+                  class="code-tab-btn"
+                  [class.active]="getActiveTab(doc.id) === 'css'"
+                  (click)="setTab(doc.id, 'css')"
+                >
+                  CSS
+                </button>
+                <button
+                  class="code-tab-btn"
+                  [class.active]="getActiveTab(doc.id) === 'angular'"
+                  (click)="setTab(doc.id, 'angular')"
+                >
+                  Angular
+                </button>
+              </div>
+
+              <button
+                class="copy-btn glass"
+                (click)="copySnippet(doc.id, getActiveTab(doc.id) === 'html' ? doc.htmlSnippet : getActiveTab(doc.id) === 'css' ? doc.cssSnippet : doc.angularSnippet)"
+              >
+                {{ isCopied(doc.id) ? t('wiki.copied') : t('wiki.copy') }}
+              </button>
+            </div>
+
+            <div class="code-content">
+              @if (getActiveTab(doc.id) === 'html') {
+                <pre class="code-block"><code>{{ doc.htmlSnippet }}</code></pre>
+              } @else if (getActiveTab(doc.id) === 'css') {
+                <pre class="code-block"><code>{{ doc.cssSnippet }}</code></pre>
+              } @else {
+                <pre class="code-block"><code>{{ doc.angularSnippet }}</code></pre>
+              }
+            </div>
+          </div>
+
+          <!-- CLASSES / MODIFIERS TABLE -->
+          <div class="classes-section">
+            <h4 class="classes-title">{{ t('wiki.classes') }}</h4>
+            <div class="table-responsive">
+              <table class="wiki-table">
+                <thead>
+                  <tr>
+                    <th>Classe / Tag</th>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (c of doc.classes; track c.cls) {
+                    <tr>
+                      <td><code class="class-pill">{{ c.cls }}</code></td>
+                      <td><span class="type-badge">{{ c.type }}</span></td>
+                      <td>{{ i18n.lang() === 'pt' ? c.descPt : c.descEn }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+      }
+    </main>
+  </div>
+</div>

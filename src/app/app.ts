@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, computed, inject, signal, viewChild } from '@angular/core';
 import { I18n, Key } from './i18n';
+import { Wiki } from './wiki/wiki';
 
 const DEFAULTS = { blur: 18, opacity: 12, refraction: 40, saturation: 180, specular: 55, radius: 40 };
 
@@ -53,12 +54,15 @@ const SNIPPETS = {
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [Wiki],
   templateUrl: './app.html',
 })
 export class App implements OnInit {
   protected readonly i18n = inject(I18n);
   protected readonly snippets = SNIPPETS;
+
+  // View state: Showcase vs Wiki
+  readonly currentView = signal<'showcase' | 'wiki'>('showcase');
 
   // gallery state
   protected readonly airplane = signal(true);
@@ -105,8 +109,32 @@ export class App implements OnInit {
     return this.i18n.t(key);
   }
 
+  setView(view: 'showcase' | 'wiki') {
+    this.currentView.set(view);
+    if (view === 'wiki') {
+      if (!window.location.hash.startsWith('#wiki') && !window.location.hash.startsWith('#doc-')) {
+        window.location.hash = '#wiki';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.location.hash = '#hero';
+    }
+  }
+
   ngOnInit() {
     document.documentElement.lang = this.i18n.lang() === 'pt' ? 'pt-BR' : 'en';
+
+    const checkHash = () => {
+      const h = window.location.hash;
+      if (h.startsWith('#wiki') || h.startsWith('#doc-')) {
+        this.currentView.set('wiki');
+      } else if (h === '#showcase' || h === '#hero' || h === '#components' || h === '#compare' || h === '#playground' || h === '#how') {
+        this.currentView.set('showcase');
+      }
+    };
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       this.installEvent.set(e);

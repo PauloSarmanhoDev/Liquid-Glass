@@ -12,33 +12,49 @@
 </div>
 
 <nav class="nav glass" aria-label="Main">
-  <a class="brand" href="#hero" style="text-decoration: none; color: inherit"><i></i><span>Liquid Glass</span></a>
+  <a class="brand" href="javascript:void(0)" (click)="setView('showcase')" style="text-decoration: none; color: inherit"><i></i><span>Liquid Glass</span></a>
+  
+  <div class="view-switch">
+    <button class="view-switch-btn" [class.active]="currentView() === 'showcase'" (click)="setView('showcase')">
+      🌟 {{ t('nav.showcase') }}
+    </button>
+    <button class="view-switch-btn" [class.active]="currentView() === 'wiki'" (click)="setView('wiki')">
+      📚 {{ t('nav.wiki') }}
+    </button>
+  </div>
+
   <div class="nav-links">
-    <a href="#components" [class.active]="active() === 'components'">{{ t('nav.components') }}</a>
-    <a href="#compare" [class.active]="active() === 'compare'">{{ t('nav.compare') }}</a>
-    <a href="#playground" [class.active]="active() === 'playground'">{{ t('nav.playground') }}</a>
-    <a href="#how" [class.active]="active() === 'how'">{{ t('nav.how') }}</a>
+    @if (currentView() === 'showcase') {
+      <a href="#components" [class.active]="active() === 'components'">{{ t('nav.components') }}</a>
+      <a href="#compare" [class.active]="active() === 'compare'">{{ t('nav.compare') }}</a>
+      <a href="#playground" [class.active]="active() === 'playground'">{{ t('nav.playground') }}</a>
+      <a href="#how" [class.active]="active() === 'how'">{{ t('nav.how') }}</a>
+    }
     <button class="lang-btn" id="lang-toggle" (click)="i18n.toggle()" aria-label="Language">
       {{ i18n.lang() === 'pt' ? 'EN' : 'PT' }}
     </button>
   </div>
 </nav>
 
-<main>
-  <!-- HERO -->
-  <section id="hero" class="hero">
-    <div class="container hero-grid">
-      <div class="reveal">
-        <span class="badge glass">{{ t('hero.badge') }}</span>
-        <h1 class="grad-text">{{ t('hero.title') }}</h1>
-        <p class="lead">{{ t('hero.subtitle') }}</p>
-        <div class="hero-actions">
-          <a class="btn primary glass" id="cta-components" href="#components" style="text-decoration: none">{{ t('hero.cta1') }}</a>
-          <a class="btn glass" id="cta-playground" href="#playground" style="text-decoration: none">{{ t('hero.cta2') }}</a>
-          @if (installEvent()) {
-            <button class="btn glass" id="install-btn" (click)="install()">⬇ {{ t('hero.install') }}</button>
-          }
-        </div>
+@if (currentView() === 'wiki') {
+  <app-wiki></app-wiki>
+} @else {
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="badge glass">{{ t('hero.badge') }}</span>
+          <h1 class="grad-text">{{ t('hero.title') }}</h1>
+          <p class="lead">{{ t('hero.subtitle') }}</p>
+          <div class="hero-actions">
+            <a class="btn primary glass" id="cta-components" href="#components" style="text-decoration: none">{{ t('hero.cta1') }}</a>
+            <button class="btn glass" (click)="setView('wiki')">📚 {{ t('nav.wiki') }}</button>
+            <a class="btn glass" id="cta-playground" href="#playground" style="text-decoration: none">{{ t('hero.cta2') }}</a>
+            @if (installEvent()) {
+              <button class="btn glass" id="install-btn" (click)="install()">⬇ {{ t('hero.install') }}</button>
+            }
+          </div>
         <div class="chips">
           <span class="chip glass">{{ t('hero.f1') }}</span>
           <span class="chip glass">{{ t('hero.f2') }}</span>
@@ -275,6 +291,7 @@
     </div>
   </section>
 </main>
+}
 
 <footer>{{ t('footer') }}</footer>
 
