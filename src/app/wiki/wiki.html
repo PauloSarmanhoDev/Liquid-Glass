@@ -24,38 +24,17 @@
         <div class="bg-switcher glass">
           <span class="bg-label">{{ t('wiki.bg') }}</span>
           <div class="bg-buttons">
-            <button
-              class="bg-btn cosmic"
-              [class.active]="previewBg() === 'cosmic'"
-              (click)="previewBg.set('cosmic')"
-              title="Cosmic"
-            >
-              {{ t('wiki.bg.cosmic') }}
-            </button>
-            <button
-              class="bg-btn sunset"
-              [class.active]="previewBg() === 'sunset'"
-              (click)="previewBg.set('sunset')"
-              title="Sunset"
-            >
-              {{ t('wiki.bg.sunset') }}
-            </button>
-            <button
-              class="bg-btn emerald"
-              [class.active]="previewBg() === 'emerald'"
-              (click)="previewBg.set('emerald')"
-              title="Emerald"
-            >
-              {{ t('wiki.bg.emerald') }}
-            </button>
-            <button
-              class="bg-btn dark"
-              [class.active]="previewBg() === 'dark'"
-              (click)="previewBg.set('dark')"
-              title="Dark Slate"
-            >
-              {{ t('wiki.bg.dark') }}
-            </button>
+            @for (opt of bgOptions; track opt.id) {
+              <button
+                class="bg-btn"
+                [class.active]="previewBg() === opt.id"
+                (click)="previewBg.set(opt.id)"
+                [title]="t(opt.labelKey)"
+              >
+                <span class="bg-swatch" [style.background]="opt.swatchGradient" aria-hidden="true"></span>
+                <span class="bg-text">{{ t(opt.labelKey) }}</span>
+              </button>
+            }
           </div>
         </div>
       </div>

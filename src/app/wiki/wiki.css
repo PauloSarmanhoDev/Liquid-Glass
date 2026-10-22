@@ -63,6 +63,7 @@
   padding: 0.4rem 0.8rem;
   --glass-radius: 999px;
   font-size: 0.85rem;
+  max-width: 100%;
 }
 
 .bg-label {
@@ -70,26 +71,53 @@
   font-weight: 500;
   font-size: 0.8rem;
   margin-right: 0.2rem;
+  white-space: nowrap;
 }
 
 .bg-buttons {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.32rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .bg-btn {
-  padding: 0.35rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.32rem 0.68rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-dim);
-  transition: all 0.25s var(--ease);
+  transition: all 0.22s var(--ease);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bg-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .bg-btn.active {
   color: #fff;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.bg-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4), 0 1px 3px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease);
+}
+
+.bg-btn:hover .bg-swatch,
+.bg-btn.active .bg-swatch {
+  transform: scale(1.2);
 }
 
 /* ---------- Layout Grid ---------- */
@@ -314,6 +342,54 @@
               radial-gradient(circle at 75% 35%, #06b6d4 0%, transparent 55%),
               radial-gradient(circle at 50% 90%, #3b82f6 0%, transparent 60%),
               #071f1e;
+}
+.preview-stage[data-bg='sequoia'] {
+  background: radial-gradient(circle at 18% 22%, #d97706 0%, transparent 50%),
+              radial-gradient(circle at 82% 28%, #ea580c 0%, transparent 50%),
+              radial-gradient(circle at 35% 80%, #059669 0%, transparent 55%),
+              radial-gradient(circle at 75% 85%, #15803d 0%, transparent 55%),
+              #131b18;
+}
+.preview-stage[data-bg='aurora'] {
+  background: radial-gradient(ellipse at 30% 15%, rgba(16, 185, 129, 0.75) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(6, 182, 212, 0.75) 0%, transparent 55%),
+              radial-gradient(circle at 50% 70%, rgba(139, 92, 246, 0.65) 0%, transparent 60%),
+              radial-gradient(circle at 85% 85%, rgba(236, 72, 153, 0.45) 0%, transparent 50%),
+              #050816;
+}
+.preview-stage[data-bg='neon'] {
+  background: radial-gradient(circle at 20% 30%, #f43f5e 0%, transparent 50%),
+              radial-gradient(circle at 85% 25%, #00f0ff 0%, transparent 50%),
+              radial-gradient(circle at 50% 85%, #a855f7 0%, transparent 55%),
+              radial-gradient(circle at 75% 75%, #ec4899 0%, transparent 50%),
+              #0d041c;
+}
+.preview-stage[data-bg='mesh'] {
+  background: radial-gradient(circle at 20% 25%, rgba(192, 132, 252, 0.65) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.65) 0%, transparent 50%),
+              radial-gradient(circle at 45% 75%, rgba(253, 164, 175, 0.65) 0%, transparent 50%),
+              radial-gradient(circle at 85% 80%, rgba(110, 231, 183, 0.55) 0%, transparent 50%),
+              #1a1036;
+}
+.preview-stage[data-bg='light'] {
+  background: radial-gradient(circle at 20% 20%, #dbeafe 0%, transparent 55%),
+              radial-gradient(circle at 80% 30%, #fce7f3 0%, transparent 55%),
+              radial-gradient(circle at 50% 85%, #fef3c7 0%, transparent 55%),
+              #f1f5f9;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+.preview-stage[data-bg='light'] .stage-watermark {
+  color: rgba(15, 23, 42, 0.08);
+}
+.preview-stage[data-bg='grid'] {
+  background-color: #0b0f1d;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.18) 1px, transparent 1px),
+    radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.35) 0%, transparent 60%),
+    radial-gradient(circle at 75% 70%, rgba(236, 72, 153, 0.3) 0%, transparent 60%);
+  background-size: 28px 28px, 28px 28px, 100% 100%, 100% 100%;
 }
 .preview-stage[data-bg='dark'] {
   background: radial-gradient(circle at 50% 30%, #2a3158 0%, transparent 60%),
@@ -540,6 +616,14 @@
   }
   .bg-switcher {
     width: 100%;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 20px;
+    padding: 0.8rem 1rem;
+    gap: 0.6rem;
+  }
+  .bg-buttons {
+    width: 100%;
   }
 }
+

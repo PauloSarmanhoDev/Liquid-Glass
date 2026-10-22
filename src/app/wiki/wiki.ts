@@ -2,7 +2,23 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { I18n, Key } from '../i18n';
 import { COMPONENTS_DOCS, ComponentDoc, WIKI_CATEGORIES, WikiCategory } from './wiki-data';
 
-export type PreviewBg = 'cosmic' | 'sunset' | 'emerald' | 'dark';
+export type PreviewBg =
+  | 'cosmic'
+  | 'sunset'
+  | 'emerald'
+  | 'sequoia'
+  | 'aurora'
+  | 'neon'
+  | 'mesh'
+  | 'light'
+  | 'grid'
+  | 'dark';
+
+export interface WikiBgOption {
+  id: PreviewBg;
+  labelKey: Key;
+  swatchGradient: string;
+}
 
 @Component({
   selector: 'app-wiki',
@@ -20,6 +36,59 @@ export class Wiki {
   readonly search = signal('');
   readonly selectedCategory = signal<WikiCategory['id']>('all');
   readonly previewBg = signal<PreviewBg>('cosmic');
+
+  readonly bgOptions: WikiBgOption[] = [
+    {
+      id: 'cosmic',
+      labelKey: 'wiki.bg.cosmic',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #3b82f6, #ff4f8b, #120e2e)',
+    },
+    {
+      id: 'sunset',
+      labelKey: 'wiki.bg.sunset',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #ff6b4a, #ff2e93, #7928ca)',
+    },
+    {
+      id: 'emerald',
+      labelKey: 'wiki.bg.emerald',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #059669, #06b6d4, #071f1e)',
+    },
+    {
+      id: 'sequoia',
+      labelKey: 'wiki.bg.sequoia',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #d97706, #15803d, #131b18)',
+    },
+    {
+      id: 'aurora',
+      labelKey: 'wiki.bg.aurora',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #10b981, #8b5cf6, #050816)',
+    },
+    {
+      id: 'neon',
+      labelKey: 'wiki.bg.neon',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #f43f5e, #00f0ff, #0d041c)',
+    },
+    {
+      id: 'mesh',
+      labelKey: 'wiki.bg.mesh',
+      swatchGradient: 'radial-gradient(circle at 30% 30%, #c084fc, #38bdf8, #fda4af)',
+    },
+    {
+      id: 'light',
+      labelKey: 'wiki.bg.light',
+      swatchGradient: 'linear-gradient(135deg, #f8fafc, #cbd5e1, #94a3b8)',
+    },
+    {
+      id: 'grid',
+      labelKey: 'wiki.bg.grid',
+      swatchGradient: 'repeating-linear-gradient(45deg, #3b82f6 0 2px, #0f172a 2px 7px)',
+    },
+    {
+      id: 'dark',
+      labelKey: 'wiki.bg.dark',
+      swatchGradient: 'radial-gradient(circle at 50% 50%, #2a3158, #0c0e1a)',
+    },
+  ];
 
   // Track active code tab per component ID ('html' | 'css' | 'angular')
   readonly activeTabMap = signal<Record<string, 'html' | 'css' | 'angular'>>({});
