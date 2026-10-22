@@ -1,4 +1,4 @@
-﻿export interface ComponentDoc {
+export interface ComponentDoc {
   id: string;
   category: 'buttons' | 'forms' | 'surfaces' | 'nav' | 'overlays' | 'widgets' | 'feedback' | 'tokens';
   namePt: string;
@@ -472,7 +472,7 @@ export class GlassCardComponent {
   </div>
   <div class="nav-links">
     <a href="#components" class="active">Componentes</a>
-    <a href="#playground">Playground</a>
+    <a href="#wiki">Wiki</a>
   </div>
 </nav>`,
     cssSnippet: `.nav {
