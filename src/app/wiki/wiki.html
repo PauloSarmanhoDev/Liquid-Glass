@@ -46,18 +46,40 @@
     <!-- SIDEBAR CATEGORIES -->
     <aside class="wiki-sidebar">
       <div class="sidebar-inner glass">
-        <h4 class="sidebar-title">Categorias</h4>
+        <h4 class="sidebar-title">{{ t('wiki.categories') }}</h4>
         <nav class="sidebar-nav" aria-label="Component categories">
           @for (cat of categories; track cat.id) {
-            <button
-              class="cat-item"
-              [class.active]="selectedCategory() === cat.id"
-              (click)="selectedCategory.set(cat.id)"
-            >
-              <span class="cat-icon">{{ cat.icon }}</span>
-              <span class="cat-label">{{ i18n.lang() === 'pt' ? cat.labelPt : cat.labelEn }}</span>
-              <span class="cat-count">{{ getCategoryCount(cat.id) }}</span>
-            </button>
+            <div class="cat-group" [class.expanded]="isCategoryExpanded(cat.id)">
+              <button
+                class="cat-item"
+                [class.active]="selectedCategory() === cat.id"
+                (click)="onCategoryClick(cat.id)"
+                [attr.aria-expanded]="cat.id !== 'all' ? isCategoryExpanded(cat.id) : null"
+              >
+                <span class="cat-icon">{{ cat.icon }}</span>
+                <span class="cat-label">{{ i18n.lang() === 'pt' ? cat.labelPt : cat.labelEn }}</span>
+                <span class="cat-count">{{ getCategoryCount(cat.id) }}</span>
+                @if (cat.id !== 'all' && getCategoryDocs(cat.id).length > 0) {
+                  <span class="cat-chevron" aria-hidden="true">▾</span>
+                }
+              </button>
+
+              @if (cat.id !== 'all' && isCategoryExpanded(cat.id)) {
+                <div class="cat-sublist" role="list">
+                  @for (doc of getCategoryDocs(cat.id); track doc.id) {
+                    <button
+                      class="sub-item"
+                      [class.active]="activeDocId() === doc.id"
+                      (click)="scrollToDoc(doc.id, cat.id)"
+                      [title]="i18n.lang() === 'pt' ? doc.namePt : doc.nameEn"
+                    >
+                      <span class="sub-dot"></span>
+                      <span class="sub-label">{{ i18n.lang() === 'pt' ? doc.namePt : doc.nameEn }}</span>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
           }
         </nav>
       </div>

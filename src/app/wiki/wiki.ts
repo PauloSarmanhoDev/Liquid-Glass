@@ -36,6 +36,8 @@ export class Wiki {
   readonly search = signal('');
   readonly selectedCategory = signal<WikiCategory['id']>('all');
   readonly previewBg = signal<PreviewBg>('cosmic');
+  readonly expandedCategories = signal<Set<string>>(new Set<string>());
+  readonly activeDocId = signal<string | null>(null);
 
   readonly bgOptions: WikiBgOption[] = [
     {
@@ -153,6 +155,73 @@ export class Wiki {
   getCategoryCount(catId: WikiCategory['id']): number {
     if (catId === 'all') return this.allDocs.length;
     return this.allDocs.filter((d) => d.category === catId).length;
+  }
+
+  getCategoryDocs(catId: WikiCategory['id']): ComponentDoc[] {
+    if (catId === 'all') return this.allDocs;
+    const isPt = this.i18n.lang() === 'pt';
+    const q = this.search().trim().toLowerCase();
+    const docs = this.allDocs.filter((d) => d.category === catId);
+
+    if (!q) return docs;
+
+    return docs.filter((doc) => {
+      const name = isPt ? doc.namePt : doc.nameEn;
+      const desc = isPt ? doc.descPt : doc.descEn;
+      const tagline = isPt ? doc.taglinePt : doc.taglineEn;
+      const classesStr = doc.classes.map((c) => c.cls).join(' ');
+      return (
+        name.toLowerCase().includes(q) ||
+        desc.toLowerCase().includes(q) ||
+        tagline.toLowerCase().includes(q) ||
+        classesStr.toLowerCase().includes(q) ||
+        doc.id.toLowerCase().includes(q)
+      );
+    });
+  }
+
+  isCategoryExpanded(catId: string): boolean {
+    if (this.search().trim()) {
+      return this.getCategoryDocs(catId as WikiCategory['id']).length > 0;
+    }
+    return this.expandedCategories().has(catId);
+  }
+
+  onCategoryClick(catId: WikiCategory['id']) {
+    this.selectedCategory.set(catId);
+
+    if (catId === 'all') {
+      this.activeDocId.set(null);
+      return;
+    }
+
+    this.expandedCategories.update((set) => {
+      const next = new Set(set);
+      if (next.has(catId)) {
+        next.delete(catId);
+      } else {
+        next.add(catId);
+      }
+      return next;
+    });
+  }
+
+  scrollToDoc(docId: string, catId: WikiCategory['id']) {
+    this.selectedCategory.set(catId);
+    this.activeDocId.set(docId);
+
+    this.expandedCategories.update((set) => {
+      const next = new Set(set);
+      next.add(catId);
+      return next;
+    });
+
+    setTimeout(() => {
+      const el = document.getElementById('doc-' + docId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   }
 
   getActiveTab(docId: string): 'html' | 'css' | 'angular' {
