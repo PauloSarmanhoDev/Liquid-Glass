@@ -1,0 +1,152 @@
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <span class="badge glass">{{ t('hero.badge') }}</span>
+      <h1 class="grad-text">{{ t('hero.title') }}</h1>
+      <p class="lead">{{ t('hero.subtitle') }}</p>
+      <div class="hero-actions">
+        <a class="btn primary glass" id="cta-components" href="#components">{{ t('hero.cta1') }}</a>
+        <a class="btn glass" routerLink="/wiki">📚 {{ t('nav.wiki') }}</a>
+        <a class="btn glass" routerLink="/playground">⚡ {{ t('nav.playground') }}</a>
+      </div>
+      <div class="chips">
+        <span class="chip glass">{{ t('hero.f1') }}</span>
+        <span class="chip glass">{{ t('hero.f2') }}</span>
+        <span class="chip glass">{{ t('hero.f3') }}</span>
+        <span class="chip glass">{{ t('offline') }}</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb big"></div>
+      <div class="lens l1 glass">Liquid</div>
+      <div class="lens l2 glass">✦</div>
+      <div class="lens l3 glass">Glass</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section id="components">
+  <div class="container">
+    <div class="section-head">
+      <h2>{{ t('gal.title') }}</h2>
+      <p>{{ t('gal.subtitle') }}</p>
+    </div>
+    <div class="gallery">
+      <!-- Buttons -->
+      <div class="panel glass">
+        <h3>{{ t('gal.buttons') }}</h3>
+        <div class="row">
+          <button class="btn primary glass">{{ t('gal.btn.primary') }}</button>
+          <button class="btn glass">{{ t('gal.btn.secondary') }}</button>
+          <button class="btn round glass" aria-label="Like">♥</button>
+          <button class="btn round glass" aria-label="Share">⤴</button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="panel glass">
+        <h3>{{ t('gal.controls') }}</h3>
+        <div class="switch-row">
+          <span>✈️ {{ t('gal.switch') }}</span>
+          <button
+            class="switch"
+            id="switch-airplane"
+            role="switch"
+            [attr.aria-checked]="airplane()"
+            [class.on]="airplane()"
+            (click)="airplane.set(!airplane())"
+          >
+            <span class="knob glass"></span>
+          </button>
+        </div>
+        <div class="slider-wrap">
+          <label for="brightness">{{ t('gal.slider') }} <span>{{ brightness() }}%</span></label>
+          <input
+            id="brightness"
+            type="range"
+            min="0"
+            max="100"
+            [value]="brightness()"
+            [style.--fill]="fill(brightness())"
+            (input)="brightness.set(val($event))"
+          />
+        </div>
+      </div>
+
+      <!-- Segmented Control -->
+      <div class="panel glass">
+        <h3>{{ t('gal.segment') }}</h3>
+        <div class="segment glass" role="tablist">
+          <span class="thumb" [style.transform]="'translateX(' + segment() * 100 + '%)'"></span>
+          <button role="tab" id="seg-0" [class.on]="segment() === 0" (click)="segment.set(0)">{{ t('gal.seg.day') }}</button>
+          <button role="tab" id="seg-1" [class.on]="segment() === 1" (click)="segment.set(1)">{{ t('gal.seg.week') }}</button>
+          <button role="tab" id="seg-2" [class.on]="segment() === 2" (click)="segment.set(2)">{{ t('gal.seg.month') }}</button>
+        </div>
+        <div class="search glass">
+          <span>🔍</span>
+          <input id="search" type="search" [placeholder]="t('gal.search')" />
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="panel glass">
+        <h3>{{ t('gal.card') }}</h3>
+        <div class="media-card">
+          <div class="cover"></div>
+          <div>
+            <h4>{{ t('gal.card.title') }}</h4>
+            <p>{{ t('gal.card.text') }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn round glass" aria-label="Previous">⏮</button>
+          <button class="btn round primary glass" aria-label="Play">▶</button>
+          <button class="btn round glass" aria-label="Next">⏭</button>
+        </div>
+      </div>
+
+      <!-- Sheet / Modal -->
+      <div class="panel glass">
+        <h3>{{ t('gal.modal') }}</h3>
+        <div class="row">
+          <button class="btn primary glass" id="open-sheet" (click)="modal.set(true)">{{ t('gal.modal.open') }}</button>
+        </div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="panel glass">
+        <h3>{{ t('gal.tabbar') }}</h3>
+        <div class="tabbar glass">
+          @for (icon of tabs; track icon; let i = $index) {
+            <button [class.on]="tab() === i" [attr.aria-label]="tabLabels[i]" (click)="tab.set(i)">
+              {{ icon }}<small>{{ tabLabels[i] }}</small>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- macOS Interactive Dock -->
+      <div class="panel glass span2">
+        <h3>{{ t('gal.dock') }}</h3>
+        <div class="dock glass" (pointermove)="dockMove($event)" (pointerleave)="dockLeave($event)">
+          @for (icon of dockItems; track icon) {
+            <button class="dock-item" aria-label="app">{{ icon }}</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Sheet -->
+@if (modal()) {
+  <div class="scrim" (click)="modal.set(false)">
+    <div class="sheet glass" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>{{ t('gal.modal.title') }}</h3>
+      <p>{{ t('gal.modal.text') }}</p>
+      <button class="btn primary glass" id="close-sheet" (click)="modal.set(false)">{{ t('gal.modal.close') }}</button>
+    </div>
+  </div>
+}

@@ -1,0 +1,198 @@
+<div class="playground-root">
+  <!-- Studio Header -->
+  <header class="playground-header">
+    <div class="header-main">
+      <span class="badge glass">⚡ Realtime Studio</span>
+      <h1>{{ i18n.lang() === 'pt' ? 'Playground Studio Liquid Glass' : 'Liquid Glass Playground Studio' }}</h1>
+      <p class="lead">
+        {{ i18n.lang() === 'pt'
+          ? 'Edite os campos de HTML e CSS abaixo para construir componentes com desfoque de fundo, bordas especulares e refração renderizados em tempo real.'
+          : 'Edit HTML and CSS in the fields below to craft components with backdrop blur, specular rims, and realtime optical refraction.' }}
+      </p>
+    </div>
+
+    <!-- Presets Selector -->
+    <div class="presets-bar glass">
+      <span class="presets-title">Presets:</span>
+      <div class="presets-list">
+        @for (p of presets; track p.id) {
+          <button
+            class="preset-chip"
+            [class.active]="selectedPresetId() === p.id"
+            (click)="loadPreset(p.id)"
+          >
+            <span>{{ p.icon }}</span>
+            <span>{{ i18n.lang() === 'pt' ? p.namePt : p.nameEn }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls Bar -->
+  <div class="studio-controls-bar">
+    <!-- View / Editor Tab -->
+    <div class="controls-group">
+      <span class="control-label">{{ i18n.lang() === 'pt' ? 'Painéis:' : 'Panels:' }}</span>
+      <div class="segment glass">
+        <button [class.active]="editorTab() === 'both'" (click)="editorTab.set('both')">{{ i18n.lang() === 'pt' ? 'Ambos' : 'Both' }}</button>
+        <button [class.active]="editorTab() === 'html'" (click)="editorTab.set('html')">HTML</button>
+        <button [class.active]="editorTab() === 'css'" (click)="editorTab.set('css')">CSS</button>
+      </div>
+    </div>
+
+    <!-- Background Picker -->
+    <div class="controls-group">
+      <span class="control-label">{{ i18n.lang() === 'pt' ? 'Fundo do Stage:' : 'Stage Backdrop:' }}</span>
+      <div class="bg-picker glass">
+        <button
+          class="bg-dot cosmic"
+          [class.active]="previewBg() === 'cosmic'"
+          (click)="previewBg.set('cosmic')"
+          title="Cósmico"
+        ></button>
+        <button
+          class="bg-dot sunset"
+          [class.active]="previewBg() === 'sunset'"
+          (click)="previewBg.set('sunset')"
+          title="Sunset"
+        ></button>
+        <button
+          class="bg-dot emerald"
+          [class.active]="previewBg() === 'emerald'"
+          (click)="previewBg.set('emerald')"
+          title="Esmeralda"
+        ></button>
+        <button
+          class="bg-dot checkerboard"
+          [class.active]="previewBg() === 'checkerboard'"
+          (click)="previewBg.set('checkerboard')"
+          title="Padrão Geométrico"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="controls-actions">
+      <button class="action-btn glass" (click)="copyText('html')">
+        {{ copyFeedback() === 'html' ? '✓ HTML Copiado!' : 'Copiar HTML' }}
+      </button>
+      <button class="action-btn glass" (click)="copyText('css')">
+        {{ copyFeedback() === 'css' ? '✓ CSS Copiado!' : 'Copiar CSS' }}
+      </button>
+      <button class="action-btn primary glass" (click)="copyText('all')">
+        {{ copyFeedback() === 'all' ? '✓ Tudo Copiado!' : 'Copiar Tudo' }}
+      </button>
+      <button class="action-btn glass reset" (click)="resetCurrentPreset()" title="Restaurar código do preset">
+        ↺ Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Studio Workspace (Split: Editors vs Canvas) -->
+  <div class="studio-workspace" [class.expand-html]="editorTab() === 'html'" [class.expand-css]="editorTab() === 'css'">
+    <!-- Left Column: Editors -->
+    <div class="editors-column">
+      <!-- HTML Editor Box -->
+      @if (editorTab() === 'both' || editorTab() === 'html') {
+        <div class="editor-card glass">
+          <div class="editor-header">
+            <div class="editor-title">
+              <span class="file-icon">📄</span>
+              <strong>index.html</strong>
+              <span class="badge-mini">HTML</span>
+            </div>
+            <div class="editor-meta">
+              <span>{{ htmlContent().length }} chars</span>
+              <button class="copy-mini-btn" (click)="copyText('html')">
+                {{ copyFeedback() === 'html' ? '✓' : 'Copiar' }}
+              </button>
+            </div>
+          </div>
+          <div class="editor-body">
+            <textarea
+              class="code-textarea"
+              spellcheck="false"
+              [value]="htmlContent()"
+              (input)="updateHtml($event)"
+              (keydown)="handleKeyDown($event, 'html')"
+              placeholder="Digite o código HTML aqui..."
+            ></textarea>
+          </div>
+        </div>
+      }
+
+      <!-- CSS Editor Box -->
+      @if (editorTab() === 'both' || editorTab() === 'css') {
+        <div class="editor-card glass">
+          <div class="editor-header">
+            <div class="editor-title">
+              <span class="file-icon">🎨</span>
+              <strong>styles.css</strong>
+              <span class="badge-mini">CSS</span>
+            </div>
+            <div class="editor-meta">
+              <span>{{ cssContent().length }} chars</span>
+              <button class="copy-mini-btn" (click)="copyText('css')">
+                {{ copyFeedback() === 'css' ? '✓' : 'Copiar' }}
+              </button>
+            </div>
+          </div>
+          <div class="editor-body">
+            <textarea
+              class="code-textarea"
+              spellcheck="false"
+              [value]="cssContent()"
+              (input)="updateCss($event)"
+              (keydown)="handleKeyDown($event, 'css')"
+              placeholder="Digite o código CSS aqui..."
+            ></textarea>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Right Column: Live Render Stage -->
+    <div class="stage-column">
+      <div class="stage-card glass">
+        <div class="stage-header">
+          <div class="stage-title">
+            <span class="live-dot"></span>
+            <strong>{{ i18n.lang() === 'pt' ? 'Renderização em Tempo Real' : 'Realtime Live Stage' }}</strong>
+          </div>
+          <div class="stage-badges">
+            <span class="fps-badge">● 60 FPS Hardware Render</span>
+          </div>
+        </div>
+
+        <!-- Canvas Body with switchable backdrop -->
+        <div class="stage-canvas-wrapper" [class]="'bg-' + previewBg()">
+          <!-- Injected dynamic CSS -->
+          <style>{{ cssContent() }}</style>
+
+          <!-- Backdrop decoration elements -->
+          <div class="canvas-ambient" aria-hidden="true">
+            <div class="ambient-orb a1"></div>
+            <div class="ambient-orb a2"></div>
+            <div class="ambient-text">LIQUID GLASS</div>
+          </div>
+
+          <!-- Component Live Render Container -->
+          <div class="live-component-host" [innerHTML]="safeHtml()"></div>
+        </div>
+
+        <!-- Stage Footer Tips -->
+        <div class="stage-footer">
+          <div class="tip-item">
+            <span class="tip-icon">💡</span>
+            <span>
+              {{ i18n.lang() === 'pt'
+                ? 'Dica: Digite livremente nos editores à esquerda. Qualquer tag ou propriedade CSS é aplicada instantaneamente.'
+                : 'Tip: Type freely into the editors on the left. Changes apply dynamically with zero reload.' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
